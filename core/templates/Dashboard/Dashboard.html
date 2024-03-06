@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h5>Resources</h5>
+                <!-- <h5>Resources</h5>
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -20,8 +20,8 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="card">
+                </div> -->
+                <div class="card mt-4">
                     <div class="card-body">
                         <h4 class="card-title">Resources</h4>
                         <ul class="list-unstyled text-start focus-ring">
@@ -35,32 +35,33 @@
             <div class="col-md-6">
                 <h5>Issues overview</h5>
                 <header></header>
-                <div><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Revenue&quot;,&quot;backgroundColor&quot;:&quot;#4e73df&quot;,&quot;borderColor&quot;:&quot;#4e73df&quot;,&quot;data&quot;:[&quot;4500&quot;,&quot;5300&quot;,&quot;6250&quot;,&quot;7800&quot;,&quot;9800&quot;,&quot;15000&quot;],&quot;fill&quot;:true}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:true,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;bold&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;ticks&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}],&quot;yAxes&quot;:[{&quot;ticks&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}]}}}"></canvas></div>
-            </div>
+
+
+                <div><canvas data-bss-chart='{"type":"line","data":{"labels":{{ labels_json|safe }},"datasets":[{"label":"Issues","backgroundColor":"#d85e33","borderColor":"#d85e33","data":{{ data_json|safe }},"fill":true}]},"options":{"maintainAspectRatio":true,"legend":{"display":false,"labels":{"fontStyle":"normal"}},"title":{"fontStyle":"bold"},"scales":{"xAxes":[{"ticks":{"fontStyle":"normal"}}],"yAxes":[{"ticks":{"fontStyle":"normal"}}]}}}'>
+                </canvas></div>
+
+
         </div>
     </div>
-    <div class="container">
+    <div class="container mt-3">
         <h5>Instances</h5>
         <div class="table-responsive" style="margin-bottom: 5px;">
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Issues&nbsp;</th>
+                        <th>Instance ID&nbsp;</th>
                         <th>Status</th>
                         <th style="width: 50px;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for server in servers %}
                     <tr>
-                        <td>Cell 1</td>
-                        <td>status</td>
+                        <td>{{ server.instance_id }}</td>
+                        <td>Ok</td>
                         <td class="text-center"><i class="far fa-trash-alt text-danger"></i></td>
                     </tr>
-                    <tr>
-                        <td>Cell 3</td>
-                        <td>staus</td>
-                        <td class="text-center"><i class="far fa-trash-alt text-danger" style="border-color: rgb(217,9,9);--bs-danger: #dc3545;--bs-danger-rgb: 220,53,69;"></i></td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -73,19 +74,20 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Column 1</th>
-                                <th>Column 2</th>
+                                <th>Issue Name</th>
+                                <th>Instance</th>
+                                <th>Created by</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for log in logs %}
                             <tr>
-                                <td>Cell 1</td>
-                                <td>Cell 2</td>
+                                <td>{{log.log}}</td>
+                                <td>{{log.server}}</td>
+                                <td>{{log.created_by}}</td>
                             </tr>
-                            <tr>
-                                <td>Cell 3</td>
-                                <td>Cell 4</td>
-                            </tr>
+                            {% endfor %}
+
                         </tbody>
                     </table>
                 </div>
@@ -96,19 +98,17 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Column 1</th>
-                                <th>Column 2</th>
+                                <th>Technician Name</th>
+                                <th>Issues solved</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for technician in technicians %}
                             <tr>
-                                <td>Cell 1</td>
-                                <td>Cell 2</td>
+                                <td>{{technician.name}}</td>
+                                <td>{{technician.issues_resolved}}</td>
                             </tr>
-                            <tr>
-                                <td>Cell 3</td>
-                                <td>Cell 4</td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
