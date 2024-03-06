@@ -1,0 +1,119 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Resources</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Servers</td>
+                            </tr>
+                            <tr>
+                                <td>Logs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Resources</h4>
+                        <ul class="list-unstyled text-start focus-ring">
+                            <li class="focus-ring focus-ring-primary">Instances</li>
+                            <li>Logs</li>
+                            <li>Technicians</li>
+                        </ul><a class="card-link" href="#">Link</a><a class="card-link" href="#">Link</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h5>Issues overview</h5>
+                <header></header>
+                <div><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;January&quot;,&quot;February&quot;,&quot;March&quot;,&quot;April&quot;,&quot;May&quot;,&quot;June&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Revenue&quot;,&quot;backgroundColor&quot;:&quot;#4e73df&quot;,&quot;borderColor&quot;:&quot;#4e73df&quot;,&quot;data&quot;:[&quot;4500&quot;,&quot;5300&quot;,&quot;6250&quot;,&quot;7800&quot;,&quot;9800&quot;,&quot;15000&quot;],&quot;fill&quot;:true}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:true,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;bold&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;ticks&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}],&quot;yAxes&quot;:[{&quot;ticks&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}]}}}"></canvas></div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h5>Instances</h5>
+        <div class="table-responsive" style="margin-bottom: 5px;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Issues&nbsp;</th>
+                        <th>Status</th>
+                        <th style="width: 50px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cell 1</td>
+                        <td>status</td>
+                        <td class="text-center"><i class="far fa-trash-alt text-danger"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Cell 3</td>
+                        <td>staus</td>
+                        <td class="text-center"><i class="far fa-trash-alt text-danger" style="border-color: rgb(217,9,9);--bs-danger: #dc3545;--bs-danger-rgb: 220,53,69;"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Critical Issues</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Column 1</th>
+                                <th>Column 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cell 1</td>
+                                <td>Cell 2</td>
+                            </tr>
+                            <tr>
+                                <td>Cell 3</td>
+                                <td>Cell 4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h5>Technician<strong> </strong>Available</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Column 1</th>
+                                <th>Column 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cell 1</td>
+                                <td>Cell 2</td>
+                            </tr>
+                            <tr>
+                                <td>Cell 3</td>
+                                <td>Cell 4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

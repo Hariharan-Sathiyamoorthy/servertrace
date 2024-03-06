@@ -1,0 +1,60 @@
+from django.db import models
+
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from users.models import UserProfile
+
+
+
+# Server model
+class Server(models.Model):
+    name = models.CharField(max_length=100)
+    ip = models.GenericIPAddressField()
+    port = models.IntegerField()
+    instance_id = models.CharField(max_length=100)
+    instance_type = models.CharField(max_length=100)
+    stotage = models.CharField(max_length=100)
+    users = models.ManyToManyField(UserProfile)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-updated_at', '-updated_at']
+
+    def __str__(self):
+        return self.name
+# Update the Technician model to include a reference to the UserProfile model
+@receiver(post_save, sender=UserProfile)
+def create_technician(sender, instance, created, **kwargs):
+    if created and instance.is_techie:
+        Technician.objects.create(name=instance)
+
+#Technician model
+class Technician(models.Model):
+    name = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    issues_resolved = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        ordering = ['-updated_at', '-created_at']
+
+    def __str__(self):
+        return self.name.user.username
+
+
+# Log model
+class Log(models.Model):
+    server = models.ForeignKey(Server, on_delete=models.CASCADE)
+    log = models.TextField()
+    created_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    priorites = (("High","High"),("Low","Low"),("Medium","Medium"))
+    priority = models.CharField(max_length=20, choices=priorites,default="Low")
+    technician = models.ForeignKey(Technician, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        ordering = ['-updated_at', '-updated_at']
+
+    def __str__(self):
+        return self.log
