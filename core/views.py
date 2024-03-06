@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import redirect,render
 from .models import Server,Technician,Log
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
 from django.core.serializers.json import DjangoJSONEncoder
 import json
+from .forms import CreateServerForm,CreateLogForm
 
 
 
@@ -45,7 +46,19 @@ def getDashBoard(request):
     return render(request,'Dashboard/Dashboard.html',context)
 
 def createServer(request):
-    return render(request,'Servers/CreateServer.html')
+    form = CreateServerForm()
+    if request.method == 'POST':
+        form = CreateServerForm(request.POST)
+        if form.is_valid():
+            server = form.save(commit=False)
+            server.users = request.user
+            server.save()
+            return redirect('getServers')
+    else:
+        for field in form.errors:
+                form[field].field.widget.attrs['class'] += ' is-invalid'
+    context = {"form":form}
+    return render(request,'Servers/CreateServer.html',context)
 
 def viewServer(request):
     return render(request,'Servers/ViewServer.html')

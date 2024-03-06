@@ -26,9 +26,7 @@ def userLogin(request):
                 form["password"].field.widget.attrs['class'] += ' is-invalid'
                 messages.error(request, "Invalid username or password")
         else:
-            print(form.errors)
             for field in form.errors:
-                print
                 form[field].field.widget.attrs['class'] += ' is-invalid'
             
     context = {'page':page,"form":form}
