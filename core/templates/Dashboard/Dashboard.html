@@ -25,10 +25,12 @@
                     <div class="card-body">
                         <h4 class="card-title">Resources</h4>
                         <ul class="list-unstyled text-start focus-ring">
-                            <li class="focus-ring focus-ring-primary">Instances</li>
-                            <li>Logs</li>
-                            <li>Technicians</li>
-                        </ul><a class="card-link" href="#">Link</a><a class="card-link" href="#">Link</a>
+                            <!-- <li class="focus-ring focus-ring-primary">Instances</li> -->
+
+                            <li><a class="card-link" style="text-decoration: none;" href="{% url 'core:get_servers' %}">Servers - {{total_servers}}</a></li>
+                            <li><a class="card-link" style="text-decoration: none;" href="{% url 'core:logs' %}">Logs - {{total_logs}}</a></li>
+                            <li><a class="card-link" style="text-decoration: none;" href="{% url 'core:get_technicians' %}">Technicians - {{total_technicians}}</a></li>
+                        <!-- </ul><a class="card-link" href="#">Link</a><a class="card-link" href="#">Link</a> -->
                     </div>
                 </div>
             </div>
@@ -44,7 +46,7 @@
         </div>
     </div>
     <div class="container mt-3">
-        <h5>Instances</h5>
+        <h5><a class="card-link" style="text-decoration: none;" href="{% url 'core:get_servers' %}">Instances</a></h5>
         <div class="table-responsive" style="margin-bottom: 5px;">
             <table class="table table-bordered">
                 <thead>
@@ -69,7 +71,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h5>Critical Issues</h5>
+                <h5><a class="card-link" style="text-decoration: none;" href="{% url 'core:logs' %}">Critical Issues</a></h5>
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -93,7 +95,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <h5>Technician<strong> </strong>Available</h5>
+                <h5><a class="card-link" style="text-decoration: none;" href="{% url 'core:get_technicians' %}">Technician</a></h5>
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>

@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h5>Issues</h5>
+    <div class="table-responsive" style="margin-bottom: 5px;">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Instance</th>
+                    <th>Issue</th>
+                    <th>Priority</th>
+                    <th>Technician</th>
+                    <th>Created By</th>
+                    <th>Created at</th>
+                    <th style="width: 50px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{log.server}}</td>
+                    <td>{{log.log}}</td>
+                    <td>{{log.priority}}</td>
+                    <td>{{log.technician}}</td>
+                    <td>{{log.created_by}}</td>
+                    <td>{{log.created_at}}</td>
+                    <td class="text-center"><i class="fas fa-trash-alt text-danger me-2"></i> <i class="fas fa-edit" style="color: #0004ff;"></i></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

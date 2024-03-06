@@ -14,10 +14,13 @@ def getDashBoard(request):
 
     # get total number of servers
     servers = Server.objects.all()
+    total_servers = servers.count()
     # get total number of technicians
     technicians = Technician.objects.all()
+    total_technicians = technicians.count()
     # get total number of logs
     logs = Log.objects.filter(priority="High")
+    total_logs = logs.count()
     # send data to the template
     logs_per_month = Log.objects.annotate(month=TruncMonth('created_at')).values('month').annotate(count=Count('id')).values('month', 'count')
     # create a two list  one with the month and the other with the count
@@ -34,6 +37,63 @@ def getDashBoard(request):
         'logs': logs,
         'labels_json': labels_json,
         'data_json': data_json,
+        'total_servers': total_servers,
+        'total_technicians': total_technicians,
+        'total_logs': total_logs
     }
     # print(context)
     return render(request,'Dashboard/Dashboard.html',context)
+
+def createServer(request):
+    return render(request,'Servers/CreateServer.html')
+
+def viewServer(request):
+    return render(request,'Servers/ViewServer.html')
+
+def deleteServer(request):
+    return render(request,'Servers/DeleteServer.html')
+
+def getServers(request):
+    servers = Server.objects.all()
+    context = {
+        'servers': servers
+    }
+    return render(request,'Servers/GetServers.html',context)
+
+def getAServer(request):
+    return render(request,'Servers/GetAServer.html')
+
+def getLogs(request):
+    logs = Log.objects.all()
+    context = {
+        'logs': logs
+    }
+    return render(request,'Logs/GetLogs.html',context)
+
+def createLog(request):
+    return render(request,'Logs/CreateLog.html')
+
+def editLog(request):
+    return render(request,'Logs/EditLog.html')
+
+def deleteLog(request):
+    return render(request,'Logs/DeleteLog.html')
+
+def getTechnicians(request):
+    techs = Technician.objects.all()
+    context = {
+        'techs': techs
+    }
+    return render(request,'Technicians/GetTechnicians.html',context)
+
+def createTechnician(request):
+    return render(request,'Technicians/CreateTechnician.html')
+
+def editTechnician(request):
+    return render(request,'Technicians/EditTechnician.html')
+
+def deleteTechnician(request):
+    return render(request,'Technicians/DeleteTechnician.html')
+
+
+
