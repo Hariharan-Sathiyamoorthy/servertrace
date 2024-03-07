@@ -1,6 +1,7 @@
 {% extends 'main.html' %}
 
 {% block content %}
+
 <div class="container mt-3">
     <h5>Instances</h5>
     <div class="table-responsive" style="margin-bottom: 5px;">
@@ -29,5 +30,13 @@
             </tbody>
         </table>
     </div>
+    
 </div>
+<div style="position: fixed; right: 109px; bottom: 42px;">
+    <button type="button" class="btn btn-primary btn-lg rounded-pill" onclick="location.href=`{% url 'core:create' %}`">
+        <i class="fas fa-plus"></i>
+    </button>
+</div>
+
+
 {% endblock content %}

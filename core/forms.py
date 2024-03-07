@@ -13,7 +13,7 @@ class CreateServerForm(forms.ModelForm):
 
     class Meta:
         model = Server
-        fields = ['name', 'ip', 'port', 'instance_id', 'instance_type', 'stotage','users']
+        fields = ['name', 'ip', 'port', 'instance_id', 'instance_type', 'stotage']
 
 class CreateLogForm(forms.ModelForm):
     server = forms.ModelChoiceField(queryset=Server.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), required=True)

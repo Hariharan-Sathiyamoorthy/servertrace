@@ -5,6 +5,9 @@ from django.db.models import Count
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 from .forms import CreateServerForm,CreateLogForm
+from users.models import UserProfile
+from django.http import HttpResponse
+from django.contrib.auth.models import User
 
 
 
@@ -49,13 +52,15 @@ def createServer(request):
     form = CreateServerForm()
     if request.method == 'POST':
         form = CreateServerForm(request.POST)
+        user = UserProfile.objects.get(user=request.user)
         if form.is_valid():
             server = form.save(commit=False)
-            server.users = request.user
             server.save()
-            return redirect('getServers')
-    else:
-        for field in form.errors:
+            server.users.set([user.id])
+            return redirect('/server/get_servers')
+        else:  
+            print("d",form.errors)
+            for field in form.errors:
                 form[field].field.widget.attrs['class'] += ' is-invalid'
     context = {"form":form}
     return render(request,'Servers/CreateServer.html',context)
