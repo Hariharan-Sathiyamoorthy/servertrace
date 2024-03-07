@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<style>
+    .col {
+        border-right: 1px solid #ccc;
+    }
+    .col:last-child {
+        border-right: none;
+    }
+</style>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h5>Instance summary for {{server.instance_id}}</h5>
+        </div>
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-body-secondary"></h6>
+            <div class="row">
+                <div class="col mb-4"><h5>Name</h5> {{server.name}}</div>
+                <div class="col mb-4"><h5> Image </h5>{{server.application_image}}</div>
+                <div class="col mb-4"><h5>Ip </h5>{{server.ip}}</div>
+            </div>
+            <div class="row">
+                <div class="col mb-4"><h5>Network</h5> {{server.network}}</div>
+                <div class="col mb-4"><h5>Instance Type</h5> {{server.instance_type}}</div>
+                <div class="col mb-4"><h5>Storage </h5>{{server.storage}}GB</div>
+            </div>
+            <div class="row">
+                <div class="col mb-4"><h5>Instance State</h5> {{server.instance_state}}</div>
+                <div class="col mb-4"><h5>Created at</h5> {{server.created_at}}</div>
+                <div class="col mb-4"></div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

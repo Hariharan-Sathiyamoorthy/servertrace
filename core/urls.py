@@ -10,7 +10,7 @@ urlpatterns = [
     path("edit/<int:id>/", views.viewServer, name="view"),
     path("delete/<int:id>/", views.deleteServer, name="delete"),
     path("get_servers/", views.getServers, name="get_servers"),
-    path("get_server/<int:id>/", views.getAServer, name="get_a_server"),
+    path("get_server/<int:id>/", views.viewServer, name="get_a_server"),
     # Logs
     path("get_logs/", views.getLogs, name="logs"),
     path("create_log/", views.createLog, name="create_log"),

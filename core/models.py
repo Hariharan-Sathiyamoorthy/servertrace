@@ -8,13 +8,20 @@ from users.models import UserProfile
 
 
 # Server model
+#vpc group
+#Appliction OS and Image
+#allow ssh trafic
 class Server(models.Model):
     name = models.CharField(max_length=100)
+    application_image = models.CharField(max_length=100, default="Ubuntu")
     ip = models.GenericIPAddressField()
-    port = models.IntegerField()
+    network = models.CharField(max_length=100, default="VPC-aaabbbcc")
     instance_id = models.CharField(max_length=100)
     instance_type = models.CharField(max_length=100)
-    stotage = models.CharField(max_length=100)
+    storage = models.CharField(max_length=100)
+    allow_ssh_trafic = models.BooleanField(default=False)
+    instance_state = models.CharField(max_length=100, default="Running")
+
     users = models.ManyToManyField(UserProfile)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

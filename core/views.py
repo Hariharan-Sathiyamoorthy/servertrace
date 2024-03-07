@@ -8,6 +8,7 @@ from .forms import CreateServerForm,CreateLogForm
 from users.models import UserProfile
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 
 
@@ -17,8 +18,9 @@ from django.contrib.auth.models import User
 def getDashBoard(request):
 
     # get total number of servers
-    servers = Server.objects.all()
-    total_servers = servers.count()
+    #get only 5 latest servers
+    servers = Server.objects.all().order_by('-created_at')[:5]
+    total_servers = Server.objects.all().count()
     # get total number of technicians
     technicians = Technician.objects.all()
     total_technicians = technicians.count()
@@ -65,8 +67,14 @@ def createServer(request):
     context = {"form":form}
     return render(request,'Servers/CreateServer.html',context)
 
-def viewServer(request):
-    return render(request,'Servers/ViewServer.html')
+def viewServer(request,id):
+    server = get_object_or_404(Server, id=id)
+    # logstoServer = Log.objects.filter(server=server.name)
+    context = {
+        'server': server,
+        # 'logs': logstoServer
+    }
+    return render(request,'Servers/ViewServer.html',context)
 
 def deleteServer(request):
     return render(request,'Servers/DeleteServer.html')
