@@ -18,7 +18,7 @@ urlpatterns = [
     path("delete_log/<int:id>/", views.deleteLog, name="delete_log"),
     # Technicians
     path("get_technicians/", views.getTechnicians, name="get_technicians"),
-    path("create_technician/", views.createTechnician, name="create_technician"),
+    # path("create_technician/", views.createTechnician, name="create_technician"),
     path("edit_technician/<int:id>/", views.editTechnician, name="edit_technician"),
     path("delete_technician/<int:id>/", views.deleteTechnician, name="delete_technician"),
 ]

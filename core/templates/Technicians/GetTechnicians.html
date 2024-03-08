@@ -9,7 +9,9 @@
                 <tr>
                     <th>Name</th>
                     <th>Issues Resolved</th>
+                    {% if request.user.userprofile.is_admin %}
                     <th style="width: 50px;">Action</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -17,11 +19,52 @@
                 <tr>
                     <td>{{tech.name}}</td>
                     <td>{{tech.issues_resolved}}</td>
-                    <td class="text-center"><i class="fas fa-trash-alt text-danger me-2"></i> <i class="fas fa-edit" style="color: #0004ff;"></i></td>
+                    {% if request.user.userprofile.is_admin %}
+                    <td class="text-center">
+                        <div style="display: flex;">
+                            <button type="button" class="btn" data-bs-toggle="modal"id="delete-btn" onclick="setTechId(`{{ tech.id }}`)" data-bs-target="#exampleModal">
+                                <i class="fas fa-trash-alt text-danger me-2"></i>
+                            </button>
+                            <button type="button" class="btn"
+                                onclick="location.href=`{% url 'core:edit_technician' tech.id %}`">
+                                <i class="fas fa-edit" style="color: #0004ff;"></i>
+                            </button>
+                        </div>
+                    </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Are you sure do you want to delete your
+                                    instance?</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>This action cant be undone</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger"
+                                onclick="location.href=`{% url 'core:delete_technician' id=0 %}`.replace('0', techId)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tbody>
         </table>
     </div>
 </div>
+<script>
+    var techId
+    function setTechId(id) {
+        techId = id
+    }   
+    console.log(techId);
+</script>
 {% endblock content %}

@@ -4,7 +4,7 @@ from django.db.models.functions import TruncMonth
 from django.db.models import Count
 from django.core.serializers.json import DjangoJSONEncoder
 import json
-from .forms import CreateServerForm,CreateLogForm
+from .forms import CreateServerForm,CreateLogForm,CreateTechnicianForm
 from users.models import UserProfile
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -19,7 +19,8 @@ from django.contrib import messages
 
 def getDashBoard(request):
 
-    
+    if not request.user.is_authenticated:
+        return redirect('/users/login')
     servers = Server.objects.all().order_by('-created_at')[:5]
     total_servers = Server.objects.all().count()
     # get total number of technicians
@@ -135,7 +136,7 @@ def createLog(request):
 
 def editLog(request,id):
     user = UserProfile.objects.get(user=request.user)
-    print()
+
     form = CreateLogForm()
     log = get_object_or_404(Log, id=id)
     if request.method == 'POST':
@@ -170,14 +171,29 @@ def getTechnicians(request):
     }
     return render(request,'Technicians/GetTechnicians.html',context)
 
-def createTechnician(request):
-    return render(request,'Technicians/CreateTechnician.html')
 
-def editTechnician(request):
-    return render(request,'Technicians/EditTechnician.html')
 
-def deleteTechnician(request):
-    return render(request,'Technicians/DeleteTechnician.html')
+def editTechnician(request,id):
+    tech = get_object_or_404(Technician, id=id)
+    if request.method == 'POST':
+        form = CreateTechnicianForm(request.POST, instance=tech)
+        if form.is_valid():
+            tech = form.save(commit=False)
+            tech.save()
+            return redirect('/server/get_technicians')
+        else:
+            print(form.errors)
+            for field in form.errors:
+                form[field].field.widget.attrs['class'] += ' is-invalid'
+    else:
+        form = CreateTechnicianForm(instance=tech)
+    context = { 'form': form}
+    return render(request,'Technicians/EditTechnician.html',context)
+
+def deleteTechnician(request,id):
+    tech = get_object_or_404(Technician, id=id)
+    tech.delete()
+    return redirect('/server/get_technicians')
 
 
 

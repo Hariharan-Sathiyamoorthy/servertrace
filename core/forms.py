@@ -54,3 +54,11 @@ class CreateLogForm(forms.ModelForm):
     class Meta:
         model = Log
         fields = ['server','log', 'priority', 'technician','status']
+
+class CreateTechnicianForm(forms.ModelForm):
+
+    issues_resolved = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}), required=True)
+    is_active = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),required=False)
+    class Meta:
+        model = Technician
+        fields = [ 'issues_resolved', 'is_active']

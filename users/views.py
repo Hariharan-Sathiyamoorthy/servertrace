@@ -20,7 +20,7 @@ def userLogin(request):
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect("/")
+                    return redirect("/server/dashboard")
             except:
                 form["username"].field.widget.attrs['class'] += ' is-invalid'
                 form["password"].field.widget.attrs['class'] += ' is-invalid'
@@ -45,7 +45,7 @@ def userRegistration(request):
             user.username = form.cleaned_data.get('username')
             user.save()
             login(request, user)
-            return redirect('/')
+            return redirect('/server/dashboard')
         else:
             print(form.errors)
             for field in form.errors:

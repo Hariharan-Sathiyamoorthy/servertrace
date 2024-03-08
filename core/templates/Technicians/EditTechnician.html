@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h5>Edit Technicain</h5>
+        </div>
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-body-secondary"></h6>
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                {% for field in form %}
+                {% if field.field.widget.input_type != 'checkbox' %}
+                <div class="form-floating mb-3">
+                    {{ field }}
+                    <label>{{ field.label }}</label>
+                    {% for error in field.errors %}
+                    <p class="invalid-feedback">{{ error|escape }}</p>
+                    {% endfor %}
+                </div>
+                
+                {% else %}
+                <div class="form-check">
+                    {{ field }}
+                    <label>{{ field.label }}</label>
+                </div>
+                
+                {% endif %}
+
+                {% endfor %}
+                <div class="mt-3 d-flex justify-content-center"><button class="btn btn-primary d-block w-30"
+                        type="submit" value="Launch">Update</button></div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
