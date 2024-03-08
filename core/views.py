@@ -17,8 +17,7 @@ from django.shortcuts import get_object_or_404
 
 def getDashBoard(request):
 
-    # get total number of servers
-    #get only 5 latest servers
+    
     servers = Server.objects.all().order_by('-created_at')[:5]
     total_servers = Server.objects.all().count()
     # get total number of technicians
@@ -69,15 +68,17 @@ def createServer(request):
 
 def viewServer(request,id):
     server = get_object_or_404(Server, id=id)
-    # logstoServer = Log.objects.filter(server=server.name)
+    logstoServer = Log.objects.filter(server=server.id).count()
     context = {
         'server': server,
-        # 'logs': logstoServer
+        'logstoServer': logstoServer
     }
     return render(request,'Servers/ViewServer.html',context)
 
-def deleteServer(request):
-    return render(request,'Servers/DeleteServer.html')
+def deleteServer(request,id):
+    server = get_object_or_404(Server, id=id)
+    server.delete()
+    return redirect('/server/get_servers')
 
 def getServers(request):
     servers = Server.objects.all()
@@ -86,8 +87,24 @@ def getServers(request):
     }
     return render(request,'Servers/GetServers.html',context)
 
-def getAServer(request):
-    return render(request,'Servers/GetAServer.html')
+def updateServer(request,id):
+    server = get_object_or_404(Server, id=id)
+    if request.method == 'POST':
+        form = CreateServerForm(request.POST, instance=server)
+        user = UserProfile.objects.get(user=request.user)
+        if form.is_valid():
+            server = form.save(commit=False)
+            server.save()
+            server.users.set([user.id])
+            return redirect('/server/get_servers')
+        else:
+            print(form.errors)
+            for field in form.errors:
+                form[field].field.widget.attrs['class'] += ' is-invalid'
+    else:
+        form = CreateServerForm(instance=server)
+    context = { 'form': form }
+    return render(request,'Servers/CreateServer.html',context)  
 
 def getLogs(request):
     logs = Log.objects.all()

@@ -7,8 +7,8 @@ urlpatterns = [
     path("dashboard/", views.getDashBoard, name="dashboard"),
     # Servers
     path("create/", views.createServer, name="create"),
-    path("edit/<int:id>/", views.viewServer, name="view"),
-    path("delete/<int:id>/", views.deleteServer, name="delete"),
+    path("editServer/<int:id>/", views.updateServer, name="update"),
+    path("deleteServer/<int:id>/", views.deleteServer, name="delete"),
     path("get_servers/", views.getServers, name="get_servers"),
     path("get_server/<int:id>/", views.viewServer, name="get_a_server"),
     # Logs
