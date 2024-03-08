@@ -6,17 +6,16 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 from .forms import CreateServerForm,CreateLogForm,CreateTechnicianForm
 from users.models import UserProfile
-from django.http import HttpResponse
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 
 
-# Create your views here.
-# from django.http import HttpResponse
 
+# Dashboard view
+@login_required(login_url='/users/login')
 def getDashBoard(request):
 
     if not request.user.is_authenticated:
@@ -52,6 +51,8 @@ def getDashBoard(request):
     # print(context)
     return render(request,'Dashboard/Dashboard.html',context)
 
+# server views
+@login_required(login_url='/users/login')
 def createServer(request):
     form = CreateServerForm()
     if request.method == 'POST':
@@ -69,6 +70,7 @@ def createServer(request):
     context = {"form":form,'title': 'Create Instances', 'button': 'Launch Instance'}
     return render(request,'Servers/CreateServer.html',context)
 
+@login_required(login_url='/users/login')
 def viewServer(request,id):
     server = get_object_or_404(Server, id=id)
     logstoServer = Log.objects.filter(server=server.id).count()
@@ -79,11 +81,13 @@ def viewServer(request,id):
     }
     return render(request,'Servers/ViewServer.html',context)
 
+@login_required(login_url='/users/login')
 def deleteServer(request,id):
     server = get_object_or_404(Server, id=id)
     server.delete()
     return redirect('/server/get_servers')
 
+@login_required(login_url='/users/login')
 def getServers(request):
     servers = Server.objects.all()
     context = {
@@ -91,6 +95,7 @@ def getServers(request):
     }
     return render(request,'Servers/GetServers.html',context)
 
+@login_required(login_url='/users/login')
 def updateServer(request,id):
     server = get_object_or_404(Server, id=id)
     if request.method == 'POST':
@@ -110,6 +115,8 @@ def updateServer(request,id):
     context = { 'form': form,'title': 'Update Instance', 'button': 'Update Instance'}
     return render(request,'Servers/CreateServer.html',context)  
 
+# log views
+@login_required(login_url='/users/login')
 def getLogs(request):
     logs = Log.objects.all()
     context = {
@@ -117,6 +124,7 @@ def getLogs(request):
     }
     return render(request,'Logs/GetLogs.html',context)
 
+@login_required(login_url='/users/login')
 def createLog(request):
     user = UserProfile.objects.get(user=request.user)
     form = CreateLogForm(isTech=user.is_techie,logStatus="Open")
@@ -134,6 +142,7 @@ def createLog(request):
     context = {"form":form,'title': 'Create Log', 'button': 'Create Log'}  
     return render(request,'Logs/CreateLog.html',context)
 
+@login_required(login_url='/users/login')
 def editLog(request,id):
     user = UserProfile.objects.get(user=request.user)
 
@@ -155,7 +164,7 @@ def editLog(request,id):
     context = { 'form': form,'title': 'Update Log', 'button': 'Update Log'}
     return render(request,'Logs/CreateLog.html',context)
 
-
+@login_required(login_url='/users/login')
 def deleteLog(request,id):
     log = get_object_or_404(Log, id=id)
     if request.user != log.created_by.user:
@@ -164,6 +173,8 @@ def deleteLog(request,id):
         log.delete()
     return redirect('/server/get_logs')
 
+# technician views
+@login_required(login_url='/users/login')
 def getTechnicians(request):
     techs = Technician.objects.all()
     context = {
@@ -171,8 +182,7 @@ def getTechnicians(request):
     }
     return render(request,'Technicians/GetTechnicians.html',context)
 
-
-
+@login_required(login_url='/users/login')
 def editTechnician(request,id):
     tech = get_object_or_404(Technician, id=id)
     if request.method == 'POST':
@@ -190,6 +200,7 @@ def editTechnician(request,id):
     context = { 'form': form}
     return render(request,'Technicians/EditTechnician.html',context)
 
+@login_required(login_url='/users/login')
 def deleteTechnician(request,id):
     tech = get_object_or_404(Technician, id=id)
     tech.delete()

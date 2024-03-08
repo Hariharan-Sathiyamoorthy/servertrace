@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserSignUpForm, UserLoginForm
+from .forms import UserSignUpForm, UserLoginForm, UserEditForm
+from .models import UserProfile
 # Create your views here.
 def userLogin(request):
     page = 'login'
@@ -57,3 +58,35 @@ def userRegistration(request):
             # return render(request, "Auth/Authentication.html", {"form":form})
             # messages.error(request, "Something went wrong. Please try again.")
     return render(request, "Auth/Authentication.html", {"form":form})
+
+def getUsers(request):
+    users = UserProfile.objects.all()
+
+    context = {"users":users}
+    return render(request, "Users/GetUsers.html", context)
+
+def userEdit(request,id):
+    user = UserProfile.objects.get(id=id)
+    form = UserEditForm(instance=user)
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('/users/get_users')
+        else:
+            print(form.errors)
+            for field in form.errors:
+                form[field].field.widget.attrs['class'] += ' is-invalid'
+    else:
+        form = UserEditForm(instance=user)
+    context = {"form":form}
+    return render(request, "Users/EditUser.html", context)
+
+def userDelete(request,id):
+
+    user = UserProfile.objects.get(id=id)
+    if request.user.username == user.user.username:
+        messages.error(request, "You cannot delete yourself")
+    else:
+        user.delete()
+    return redirect('/users/get_users')

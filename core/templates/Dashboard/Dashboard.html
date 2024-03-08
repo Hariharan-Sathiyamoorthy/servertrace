@@ -33,6 +33,10 @@
                                     {{total_logs}}</a></li>
                             <li><a class="card-link" style="text-decoration: none;"
                                     href="{% url 'core:get_technicians' %}">Technicians - {{total_technicians}}</a></li>
+                            {% if request.user.userprofile.is_admin %}
+                            <li><a class="card-link" style="text-decoration: none;"
+                                    href="{% url 'users:get_users' %}">Users</a></li>
+                            {% endif %}
                             <!-- </ul><a class="card-link" href="#">Link</a><a class="card-link" href="#">Link</a> -->
                     </div>
                 </div>

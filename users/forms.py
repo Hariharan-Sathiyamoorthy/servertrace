@@ -20,3 +20,11 @@ class UserLoginForm(forms.Form):
     class Meta:
         model = User
         fields = ['username', 'password']
+
+class UserEditForm(forms.ModelForm):
+    is_admin = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),required=False)
+    is_techie = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),required=False)
+
+    class Meta:
+        model = User
+        fields = ['is_admin','is_techie']
