@@ -63,7 +63,7 @@ def createServer(request):
             print("d",form.errors)
             for field in form.errors:
                 form[field].field.widget.attrs['class'] += ' is-invalid'
-    context = {"form":form}
+    context = {"form":form,'title': 'Create Instances', 'button': 'Launch Instance'}
     return render(request,'Servers/CreateServer.html',context)
 
 def viewServer(request,id):
@@ -72,6 +72,7 @@ def viewServer(request,id):
     context = {
         'server': server,
         'logstoServer': logstoServer
+        
     }
     return render(request,'Servers/ViewServer.html',context)
 
@@ -103,7 +104,7 @@ def updateServer(request,id):
                 form[field].field.widget.attrs['class'] += ' is-invalid'
     else:
         form = CreateServerForm(instance=server)
-    context = { 'form': form }
+    context = { 'form': form,'title': 'Update Instance', 'button': 'Update Instance'}
     return render(request,'Servers/CreateServer.html',context)  
 
 def getLogs(request):
