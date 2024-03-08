@@ -41,6 +41,7 @@ def create_technician(sender, instance, created, **kwargs):
 class Technician(models.Model):
     name = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     issues_resolved = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
@@ -54,9 +55,12 @@ class Technician(models.Model):
 class Log(models.Model):
     server = models.ForeignKey(Server, on_delete=models.CASCADE)
     log = models.TextField()
-    created_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    priorites = (("High","High"),("Low","Low"),("Medium","Medium"))
-    priority = models.CharField(max_length=20, choices=priorites,default="Low")
+    created_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name="created_logs")
+    modified_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="modified_logs", null=True, blank=True)
+    priorities = (("High","High"),("Low","Low"),("Medium","Medium"))
+    priority = models.CharField(max_length=20, choices=priorities,default="Low")
+    STATUS_CHOICES = (('Open', 'Open'), ('In Progress', 'In Progress'), ('Resolved', 'Resolved'))
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Open')
     technician = models.ForeignKey(Technician, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

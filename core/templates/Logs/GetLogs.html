@@ -1,6 +1,7 @@
 {% extends 'main.html' %}
 
 {% block content %}
+
 <div class="container mt-3">
     <h5>Issues</h5>
     <div class="table-responsive" style="margin-bottom: 5px;">
@@ -25,11 +26,56 @@
                     <td>{{log.technician}}</td>
                     <td>{{log.created_by}}</td>
                     <td>{{log.created_at}}</td>
-                    <td class="text-center"><i class="fas fa-trash-alt text-danger me-2"></i> <i class="fas fa-edit" style="color: #0004ff;"></i></td>
+                    <td class="text-center">
+                        <div style="display: flex;">
+                            <button type="button" class="btn" data-bs-toggle="modal" id="delete-btn" onclick="setLogId(`{{ log.id }}`)" data-bs-target="#exampleModal">
+                                <i class="fas fa-trash-alt text-danger me-2"></i>
+                            </button>
+                            <button type="button" class="btn" 
+                                onclick="location.href=`{% url 'core:edit_log' log.id %}`">
+                                <i class="fas fa-edit" style="color: #0004ff;"></i>
+                            </button>
+                        </div>
+                    </td>
                 </tr>
+                
                 {% endfor %}
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Are you sure do you want to delete your
+                                    instance?</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>This action cant be undone</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger" id="confirm-delete-btn" onclick="location.href=`{% url 'core:delete_log' id=0 %}`.replace('0', logId)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tbody>
         </table>
     </div>
 </div>
+<div style="position: fixed; right: 109px; bottom: 42px;">
+    <button type="button" class="btn btn-primary btn-lg rounded-pill" onclick="location.href=`{% url 'core:create_log' %}`">
+        <i class="fas fa-plus"></i>
+    </button>
+</div>
+<script>
+    var logId
+    function setLogId(id) {
+        logId = id
+    }   
+    console.log(logId);
+</script>
+
 {% endblock content %}

@@ -9,6 +9,8 @@ from users.models import UserProfile
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
+
 
 
 
@@ -115,13 +117,51 @@ def getLogs(request):
     return render(request,'Logs/GetLogs.html',context)
 
 def createLog(request):
-    return render(request,'Logs/CreateLog.html')
+    user = UserProfile.objects.get(user=request.user)
+    form = CreateLogForm(isTech=user.is_techie,logStatus="Open")
+    if request.method == 'POST':
+        form = CreateLogForm(request.POST,isTech=user.is_techie,logStatus="Open")
+        if form.is_valid():
+            log = form.save(commit=False)
+            log.created_by = user
+            log.save()
+            return redirect('/server/get_logs')
+        else:
+            print(form.errors)
+            for field in form.errors:
+                form[field].field.widget.attrs['class'] += ' is-invalid'
+    context = {"form":form,'title': 'Create Log', 'button': 'Create Log'}  
+    return render(request,'Logs/CreateLog.html',context)
 
-def editLog(request):
-    return render(request,'Logs/EditLog.html')
+def editLog(request,id):
+    user = UserProfile.objects.get(user=request.user)
+    print()
+    form = CreateLogForm()
+    log = get_object_or_404(Log, id=id)
+    if request.method == 'POST':
+        form = CreateLogForm(request.POST, instance=log,isTech=user.is_techie,logStatus=log.status)
+        if form.is_valid():
+            log = form.save(commit=False)
+            log.modified_by = user
+            log.save()
+            return redirect('/server/get_logs')
+        else:
+            print(form.errors)
+            for field in form.errors:
+                form[field].field.widget.attrs['class'] += ' is-invalid'
+    else:
+        form = CreateLogForm(instance=log,isTech=user.is_techie,logStatus=log.status)
+    context = { 'form': form,'title': 'Update Log', 'button': 'Update Log'}
+    return render(request,'Logs/CreateLog.html',context)
 
-def deleteLog(request):
-    return render(request,'Logs/DeleteLog.html')
+
+def deleteLog(request,id):
+    log = get_object_or_404(Log, id=id)
+    if request.user != log.created_by.user:
+        messages.error(request, "You are not allowed to delete this log")
+    else:
+        log.delete()
+    return redirect('/server/get_logs')
 
 def getTechnicians(request):
     techs = Technician.objects.all()

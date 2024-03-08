@@ -32,10 +32,25 @@ class CreateServerForm(forms.ModelForm):
         fields = ['name', 'ip', 'network', 'instance_id', 'instance_type', 'storage',"application_image","allow_ssh_trafic"]
 
 class CreateLogForm(forms.ModelForm):
-    server = forms.ModelChoiceField(queryset=Server.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), required=True)
+    server = forms.ModelChoiceField(queryset=Server.objects.all(),widget=forms.Select(attrs={'class': 'form-select'}), required=True)
     log = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',"placeholder": "Log"}), required=True)
-    priority = forms.CharField(widget=forms.Select(attrs={'class': 'form-control'},choices=(("High","High"),("Low","Low"),("Medium","Medium"))),required=True)
-    technician = forms.ModelChoiceField(queryset=Technician.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}), required=True)
+    priority = forms.CharField(widget=forms.Select(attrs={'class': 'form-select'},choices=(("High","High"),("Low","Low"),("Medium","Medium"))),required=True)
+    technician = forms.ModelChoiceField(queryset=Technician.objects.filter(is_active=True),widget=forms.Select(attrs={'class': 'form-select'}), required=True)
+    status = forms.CharField(widget=forms.Select(attrs={'class': 'form-select'},choices=(('Open', 'Open'), ('In Progress', 'In Progress'), ('Resolved', 'Resolved'))),required=True)
+    def __init__(self, *args, **kwargs):
+        self.isTech = kwargs.pop('isTech', None)
+        logStatus = kwargs.pop('logStatus', None)
+        super(CreateLogForm, self).__init__(*args, **kwargs)
+
+        if self.isTech == False:
+            self.fields['status'].initial = logStatus
+            self.fields['status'].widget.attrs['disabled'] = 'disabled'
+            self.fields['status'].help_text = "Status can only be updated by a technician"
+    def clean(self):
+        cleaned_data = super().clean()
+        if self.isTech == False and 'status' in self.errors:
+            del self.errors['status']
+        return cleaned_data
     class Meta:
         model = Log
-        fields = ['server','log', 'priority', 'technician']
+        fields = ['server','log', 'priority', 'technician','status']
