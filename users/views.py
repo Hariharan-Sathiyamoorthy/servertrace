@@ -66,6 +66,8 @@ def userRegistration(request):
     return render(request, "Auth/Authentication.html", {"form":form})
 
 def getUsers(request):
+    if not request.user.userprofile.is_admin:
+        return redirect('/')
     users = UserProfile.objects.all()
     print(users)
 
@@ -73,6 +75,8 @@ def getUsers(request):
     return render(request, "Users/GetUsers.html", context)
 
 def userEdit(request,id):
+    if not request.user.userprofile.is_admin:
+        return redirect('/')
     user = UserProfile.objects.get(id=id)
     form = UserEditForm(instance=user)
     if request.method == 'POST':
@@ -90,7 +94,8 @@ def userEdit(request,id):
     return render(request, "Users/EditUser.html", context)
 
 def userDelete(request,id):
-
+    if not request.user.userprofile.is_admin:
+        return redirect('/')
     user = UserProfile.objects.get(id=id)
     if request.user.username == user.user.username:
         messages.error(request, "You cannot delete yourself")
