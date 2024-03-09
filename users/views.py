@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserSignUpForm, UserLoginForm, UserEditForm
+from .forms import UserSignUpForm, UserLoginForm, UserEditForm, userProfileEditForm
 from .models import UserProfile
 # Create your views here.
 def userLogin(request):
@@ -97,3 +97,20 @@ def userDelete(request,id):
     else:
         user.delete()
     return redirect('/users/get_users')
+
+def userProfileEdit(request):
+    user = User.objects.get(id = request.user.id)
+    form = userProfileEditForm(instance=user)
+    if request.method == 'POST':
+        form = userProfileEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('/server/dashboard')
+        else:
+            print(form.errors)
+            for field in form.errors:
+                form[field].field.widget.attrs['class'] += ' is-invalid'
+    else:
+        form = userProfileEditForm(instance=user)
+    context = {"form":form}
+    return render(request, "Users/EditProfile.html", context)

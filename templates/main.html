@@ -73,6 +73,8 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'users:profile' %}">{{request.user.userprofile}}</a>
                     <li class="nav-item ml-auto">
                         <a class="btn btn-primary ms-md-2" role="button" href="{% url  'users:logout' %}">
                             <i class="fas fa-sign-out-alt"></i> 

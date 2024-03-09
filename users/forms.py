@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
+from .models import UserProfile
 
 class UserSignUpForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',"placeholder": "username"}), required=True)
@@ -26,5 +27,13 @@ class UserEditForm(forms.ModelForm):
     is_techie = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),required=False)
 
     class Meta:
-        model = User
+        model = UserProfile
         fields = ['is_admin','is_techie']
+
+class userProfileEditForm(forms.ModelForm):
+    # check db if the usernmae is unique
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
+    class Meta:
+        model = User
+        fields = ['username','email']
