@@ -17,6 +17,10 @@ class UserProfile(models.Model):
     is_techie = models.BooleanField(default=False)
     is_user = models.BooleanField(default=True)
 
+    def delete(self, *args, **kwargs):
+        self.user.delete()
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return self.user.username
     

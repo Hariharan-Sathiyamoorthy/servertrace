@@ -35,7 +35,7 @@
                                     href="{% url 'core:get_technicians' %}">Technicians - {{total_technicians}}</a></li>
                             {% if request.user.userprofile.is_admin %}
                             <li><a class="card-link" style="text-decoration: none;"
-                                    href="{% url 'users:get_users' %}">Users</a></li>
+                                    href="{% url 'users:get_users' %}">Users - {{usersCount}}</a></li>
                             {% endif %}
                             <!-- </ul><a class="card-link" href="#">Link</a><a class="card-link" href="#">Link</a> -->
                     </div>

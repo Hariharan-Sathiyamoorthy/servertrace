@@ -33,6 +33,7 @@ def getDashBoard(request):
     # create a two list  one with the month and the other with the count
     labels = ["January","February"]+[log['month'].strftime('%B') for log in logs_per_month]
     data = ["4","1"]+[log['count'] for log in logs_per_month]
+    usersCount = UserProfile.objects.all().count()
 
     # convert the arrays to JSON
     labels_json = json.dumps(labels, cls=DjangoJSONEncoder)
@@ -46,7 +47,8 @@ def getDashBoard(request):
         'data_json': data_json,
         'total_servers': total_servers,
         'total_technicians': total_technicians,
-        'total_logs': total_logs
+        'total_logs': total_logs,
+        'usersCount': usersCount,
     }
     # print(context)
     return render(request,'Dashboard/Dashboard.html',context)
@@ -154,6 +156,11 @@ def editLog(request,id):
             log = form.save(commit=False)
             log.modified_by = user
             log.save()
+            status = form.cleaned_data.get('status')
+            if status == "Resolved":
+                tech = Technician.objects.get(name=user)
+                tech.issues_resolved += 1
+                tech.save()
             return redirect('/server/get_logs')
         else:
             print(form.errors)

@@ -37,6 +37,17 @@ def create_technician(sender, instance, created, **kwargs):
     if created and instance.is_techie:
         Technician.objects.create(name=instance)
 
+@receiver(post_save, sender=UserProfile)
+def update_technician(sender, instance, created, **kwargs):
+
+    if instance.is_techie:
+        Technician.objects.get_or_create(name=instance)
+    else:
+        try:
+            instance.technician.delete()
+        except Technician.DoesNotExist:
+            pass
+
 #Technician model
 class Technician(models.Model):
     name = models.OneToOneField(UserProfile, on_delete=models.CASCADE)

@@ -42,9 +42,15 @@ def userRegistration(request):
     if request.method == 'POST':
         form = UserSignUpForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.username = form.cleaned_data.get('username')
-            user.save()
+            user = User.objects.create_user(
+                username=form.cleaned_data.get('username'),
+                password=form.cleaned_data.get('password1'),
+                email=form.cleaned_data.get('email')
+            )
+            user_profile = UserProfile(user=user)
+            # user = form.save(commit=False)
+            # user.username = form.cleaned_data.get('username')
+            user_profile.save()
             login(request, user)
             return redirect('/server/dashboard')
         else:
@@ -61,6 +67,7 @@ def userRegistration(request):
 
 def getUsers(request):
     users = UserProfile.objects.all()
+    print(users)
 
     context = {"users":users}
     return render(request, "Users/GetUsers.html", context)
