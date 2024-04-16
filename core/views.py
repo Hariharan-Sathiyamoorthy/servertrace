@@ -9,6 +9,7 @@ from users.models import UserProfile
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from db_queryset_tools_pkg import DB_queryset_tools
 
 
 
@@ -17,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 # Dashboard view
 @login_required(login_url='/users/login')
 def getDashBoard(request):
-
+    tools = DB_queryset_tools()
     if not request.user.is_authenticated:
         return redirect('/users/login')
     servers = Server.objects.all().order_by('-created_at')[:5]
@@ -30,21 +31,22 @@ def getDashBoard(request):
     total_logs = logs.count()
     # send data to the template
     logs_per_month = Log.objects.annotate(month=TruncMonth('created_at')).values('month').annotate(count=Count('id')).values('month', 'count')
-    # create a two list  one with the month and the other with the count
-    labels = ["January","February"]+[log['month'].strftime('%B') for log in logs_per_month]
-    data = ["4","1"]+[log['count'] for log in logs_per_month]
-    usersCount = UserProfile.objects.all().count()
 
-    # convert the arrays to JSON
-    labels_json = json.dumps(labels, cls=DjangoJSONEncoder)
-    data_json = json.dumps(data, cls=DjangoJSONEncoder)
+    usersCount = UserProfile.objects.all().count()
+    chart_data = tools.get_dataset_for_charts(logs_per_month,'month','count')   
+    # labels = ["January","February"]+[log['month'].strftime('%B') for log in logs_per_month]
+    # data = ["4","1"]+[log['count'] for log in logs_per_month]
+
+    # # convert the arrays to JSON
+    # labels_json = json.dumps(labels, cls=DjangoJSONEncoder)
+    # data_json = json.dumps(data, cls=DjangoJSONEncoder)
     # print(months,counts)
     context = {
         'servers': servers,
         'technicians': technicians,
         'logs': logs,
-        'labels_json': labels_json,
-        'data_json': data_json,
+        'labels_json':'["January","February",'+ chart_data['dataset1'].replace('[',''),
+        'data_json': '["4","1",'+ chart_data['dataset2'].replace('[',''),
         'total_servers': total_servers,
         'total_technicians': total_technicians,
         'total_logs': total_logs,
