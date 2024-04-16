@@ -1,0 +1,21 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+  build:
+    commands:
+      - pip install --upgrade pip
+      - pip install -r requirements.txt 
+      - pip install pylint
+      - echo "Build started on `date`"
+
+  post_build:
+    commands:
+      - python --version
+      - pylint *.py **/*.py --reports=y --exit-zero
+      - echo `$CODEBUILD_SRC_DIR`
+artifacts:
+  files:
+    - '**/*'
+  name: servertrace
