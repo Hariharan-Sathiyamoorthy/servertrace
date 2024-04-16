@@ -13,6 +13,7 @@
                     <th>Instance Type</th>
                     <th>IP</th>
                     <th>Storage</th>
+                    <th>Status</th>
                     <th style="width: 50px;">Action</th>
                 </tr>
             </thead>
@@ -24,6 +25,7 @@
                     <td>{{server.instance_type}}</td>
                     <td>{{server.ip}}</td>
                     <td>{{server.storage}}GB</td>
+                    <td>{{server.instance_state}}</td>
                     <td class="text-center">
                         <div style="display: flex;">
                             <button type="button" class="btn" data-bs-toggle="modal"id="delete-btn" onclick="setServerId(`{{ server.id }}`)" data-bs-target="#exampleModal">

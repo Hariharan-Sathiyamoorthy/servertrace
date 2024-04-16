@@ -6,8 +6,6 @@ from .models import Server,Technician,Log
 class CreateServerForm(forms.ModelForm):
     faker = Faker() 
 
-
-    
     name = forms.RegexField(regex=r'^[a-zA-Z]*$',widget=forms.TextInput(attrs={'class': 'form-control',"placeholder": "Server Name"}), required=True)
     application_images = [("Ubuntu","Ubuntu"),("CentOS","CentOS"),("Red Hat","Red Hat"),("Windows","Windows")]
     application_image = forms.CharField(label='Application Image',widget=forms.Select(attrs={'class': 'form-select'},choices=application_images),required=True)
@@ -20,6 +18,9 @@ class CreateServerForm(forms.ModelForm):
     instance_type = forms.CharField(widget=forms.Select(attrs={'class': 'form-select'},choices=instance_types),required=True)
     # instance_type = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',"placeholder": "Instance Type"}), required=True)
     storage = forms.IntegerField(label='Storage in GB',min_value=8, max_value=100,widget=forms.TextInput(attrs={'class': 'form-control',"placeholder": "Storage"}), required=True)
+    # chnages instance state running to stopped with only two options
+    instance_state = forms.CharField(widget=forms.Select(attrs={'class': 'form-select'},choices=(('Running', 'Running'), ('Stopped', 'Stopped'))),required=True)
+
     # users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),widget=forms.SelectMultiple(attrs={'class': 'form-control'}), required=True)
     def __init__(self, *args, **kwargs):
         super(CreateServerForm, self).__init__(*args, **kwargs)
@@ -29,7 +30,7 @@ class CreateServerForm(forms.ModelForm):
 
     class Meta:
         model = Server
-        fields = ['name', 'ip', 'network', 'instance_id', 'instance_type', 'storage',"application_image","allow_ssh_trafic"]
+        fields = ['name', 'ip', 'network', 'instance_id', 'instance_type', 'storage',"application_image","instance_state","allow_ssh_trafic"]
 
 class CreateLogForm(forms.ModelForm):
     server = forms.ModelChoiceField(queryset=Server.objects.all(),widget=forms.Select(attrs={'class': 'form-select'}), required=True)

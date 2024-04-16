@@ -5,28 +5,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <!-- <h5>Resources</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr></tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Servers</td>
-                            </tr>
-                            <tr>
-                                <td>Logs</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> -->
                 <div class="card cream-background mt-4">
                     <div class="card-body">
                         <h4 class="card-title">Resources</h4>
                         <ul class="list-unstyled text-start focus-ring">
-                            <!-- <li class="focus-ring focus-ring-primary">Instances</li> -->
-
                             <li><a class="card-link" style="text-decoration: none;"
                                     href="{% url 'core:get_servers' %}">Instances - {{total_servers}}</a></li>
                             <li><a class="card-link" style="text-decoration: none;" href="{% url 'core:logs' %}">Logs -
@@ -37,20 +19,14 @@
                             <li><a class="card-link" style="text-decoration: none;"
                                     href="{% url 'users:get_users' %}">Users - {{usersCount}}</a></li>
                             {% endif %}
-                            <!-- </ul><a class="card-link" href="#">Link</a><a class="card-link" href="#">Link</a> -->
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <h5 class="mt-2">Issues overview</h5>
-                <header></header>
-
-
                 <div><canvas
                         data-bss-chart='{"type":"line","data":{"labels":{{ labels_json|safe }},"datasets":[{"label":"Issues","backgroundColor":"#d85e33","borderColor":"#d85e33","data":{{ data_json|safe }},"fill":true}]},"options":{"maintainAspectRatio":true,"legend":{"display":false,"labels":{"fontStyle":"normal"}},"title":{"fontStyle":"bold"},"scales":{"xAxes":[{"ticks":{"fontStyle":"normal"}}],"yAxes":[{"ticks":{"fontStyle":"normal"}}]}}}'>
                     </canvas></div>
-
-
             </div>
         </div>
         <div class="container cream-background mt-3">
@@ -71,12 +47,40 @@
                                 {% for server in servers %}
                                 <tr>
                                     <td><a href="{% url 'core:get_a_server' server.id %}">{{ server.instance_id }}</td>
-                                    <td class="text-success">{{server.instance_state}}</td>
-                                    <td class="text-center"><i class="far fa-trash-alt text-danger"></i></td>
+                                    <td class="{% if server.instance_state == 'Running' %}text-success{% else %}text-danger{% endif %}">{{server.instance_state}}</td>
+                                    <td class="text-center">
+                                        <div style="display: flex;">
+                                            <button type="button" class="btn" data-bs-toggle="modal"id="delete-btn" onclick="setServerId(`{{ server.id }}`)" data-bs-target="#exampleModal">
+                                                <i class="fas fa-trash-alt text-danger me-2"></i>
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Are you sure do you want to delete your
+                                    instance?</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>This action cant be undone</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger"
+                                onclick="location.href=`{% url 'core:delete' id=0 %}`.replace('0', serverId)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     </div>
                 </div>
             </div>
@@ -129,9 +133,19 @@
                                 {% endfor %}
                             </tbody>
                         </table>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        var serverId
+        function setServerId(id) {
+            serverId = id
+        }   
+        console.log(serverId);
+    </script>  
+</div>
+
     {% endblock content %}

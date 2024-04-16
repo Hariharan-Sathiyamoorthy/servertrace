@@ -25,8 +25,8 @@ def getDashBoard(request):
     # get total number of technicians
     technicians = Technician.objects.all()
     total_technicians = technicians.count()
-    # get total number of logs
-    logs = Log.objects.filter(priority="High")
+    # get total number of logs with status open
+    logs = Log.objects.filter(priority="High",status="Open")
     total_logs = logs.count()
     # send data to the template
     logs_per_month = Log.objects.annotate(month=TruncMonth('created_at')).values('month').annotate(count=Count('id')).values('month', 'count')

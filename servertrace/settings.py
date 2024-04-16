@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_extensions',
     'landing.apps.LandingConfig',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
@@ -82,8 +83,12 @@ WSGI_APPLICATION = 'servertrace.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'x23201550cpp',
+        'USER': 'admin',
+        'PASSWORD': 'en&9YJmJe3Yb5$',
+        'HOST': 'x23201550db.chwlezgyi7rm.eu-west-1.rds.amazonaws.com',
+        'PORT': '3306',
     }
 }
 
