@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-+9%fxz07g6be_)9f^5m$pb=_n=f7(zlir6bn&aiuurew*!6*pz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cpp1550ebapp-env.eba-gcp4hnzx.us-east-1.elasticbeanstalk.com','cpp.x23201550cloudlabs.ninja']
+ALLOWED_HOSTS = ['cpp1550ebapp-env.eba-gcp4hnzx.us-east-1.elasticbeanstalk.com','cpp.x23201550cloudlabs.ninja','x23201550cloudlabs.ninja']
 
 
 # Application definition
