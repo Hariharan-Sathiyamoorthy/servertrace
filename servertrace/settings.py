@@ -37,6 +37,10 @@ CORS_ALLOWED_ORIGINS = [
     "https://x23201550cloudlabs.ninja",
     "http://x23201550cloudlabs.ninja",
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://x23201550cloudlabs.ninja",
+    "http://x23201550cloudlabs.ninja",
+]
 
 
 # Application definition
