@@ -29,10 +29,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['cpp1550ebapp-env.eba-gcp4hnzx.us-east-1.elasticbeanstalk.com','cpp.x23201550cloudlabs.ninja','x23201550cloudlabs.ninja']
 
-
+CORS_ORIGIN_WHITELIST = [
+    "https://x23201550cloudlabs.ninja",
+    # Add any other domains you want to whitelist here
+]
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django_extensions',
     'landing.apps.LandingConfig',
     'users.apps.UsersConfig',
@@ -47,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

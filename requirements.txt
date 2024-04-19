@@ -3,6 +3,7 @@ certifi==2024.2.2
 charset-normalizer==3.3.2
 db_queryset_tools_pkg==1.0.0
 Django==5.0.2
+django-cors-headers==4.3.1
 django-extensions==3.2.3
 Faker==24.0.0
 idna==3.7
