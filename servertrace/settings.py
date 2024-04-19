@@ -33,6 +33,7 @@ CORS_ORIGIN_WHITELIST = [
     "https://x23201550cloudlabs.ninja",
     # Add any other domains you want to whitelist here
 ]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,8 +51,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
