@@ -31,8 +31,13 @@ ALLOWED_HOSTS = ['cpp1550ebapp-env.eba-gcp4hnzx.us-east-1.elasticbeanstalk.com',
 
 CORS_ORIGIN_WHITELIST = [
     "https://x23201550cloudlabs.ninja",
-    # Add any other domains you want to whitelist here
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://x23201550cloudlabs.ninja",
+    "http://x23201550cloudlabs.ninja",
+]
+
 
 # Application definition
 
