@@ -1,15 +1,32 @@
 version: 0.2
+env:
+  secrets-manager:
+    TOKEN: 23201550/CPP/prod:TOKEN
+    HOST: 23201550/CPP/prod:HOST
+    PROJECTKEY: 23201550/CPP/prod:PROJECTKEY
 phases:
   install:
     runtime-versions:
       python: 3.11
+  pre_build:
+    commands:
+      - echo "Installing Sonar Scanner"
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+      - echo "Sonar Scanner Installed Successfully"
+      - echo "Running Sonar Scanner"
+      - ./sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.projectKey=$PROJECTKEY -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$TOKEN
+      - sleep 5
+      - curl http://3.254.202.30:9000/api/qualitygates/project_status?projectKey=$PROJECTKEY > result.json
+      - cat result.json
+      - if [ -s result.json ] && [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ] ; then exit 1 ;fi
+      - echo "Sonar Scanner Completed Successfully"
   build:
     commands:
       - pip install --upgrade pip
       - pip install -r requirements.txt 
       - pip install pylint
-      - echo "Build started on `date`"
-
+      - echo "Pylint installed successfully."
   post_build:
     commands:
       - python --version
@@ -19,3 +36,4 @@ artifacts:
   files:
     - '**/*'
   name: servertrace
+
